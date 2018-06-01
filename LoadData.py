@@ -20,7 +20,7 @@ def getLabelName():
 
 def loadData(bTrain=True):
     if not bTrain:
-        return uncompress('test_batch')
+        images, labels = uncompress('test_batch')
     else:
         images = np.zeros(shape=[50000, 32, 32, 3], dtype=float)
         labels = np.zeros(shape=[50000], dtype=int)
@@ -30,4 +30,4 @@ def loadData(bTrain=True):
             end = (i+1)*10000
             images[start:end, :] = batch_data
             labels[start:end] = batch_labels
-        return images, labels
+    return images, labels, np.eye(10, dtype=float)[labels]
