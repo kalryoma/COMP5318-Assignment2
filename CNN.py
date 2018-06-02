@@ -64,7 +64,7 @@ init = tf.global_variables_initializer()
 sess = tf.InteractiveSession()
 sess.run(init)
 
-epochs = 3500
+epochs = 2800
 batch_size = 1024
 keepProb = 0.5
 iter_display = 1
