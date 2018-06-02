@@ -97,5 +97,23 @@ def confusion_matrix(actual, predict):
     return cmatrix
 
 cm = confusion_matrix(test_labels, predict_labels)
+print("Accuracy = {:>6.4f}".format(cm.diagonal().sum()*1.0/cm.sum()))
+
+def evaluation(cmatrix):
+    print("|  Label  | Precision | Recall | F-Score |")
+    total_p = 0
+    total_r = 0
+    total_f = 0
+    for i in range(10):
+        precision = cmatrix[i, i]*1.0/cmatrix[:, i].sum()
+        recall = cmatrix[i, i]*1.0/cmatrix[i, :].sum()
+        fscore = precision*recall*2.0/(precision+recall)
+        total_p += precision
+        total_r += recall
+        total_f += fscore
+        print('|{:>8d} | {:>9.4f} | {:>6.4f} | {:>7.4f} |'.format(i, precision, recall, fscore))
+    print('| Average | {:>9.4f} | {:>6.4f} | {:>7.4f} |'.format(total_p/10.0, total_r/10.0, total_f/10.0))
+
+evaluation(cm)
 
 sess.close()
