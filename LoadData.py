@@ -18,6 +18,13 @@ def getLabelName():
         data = pickle.load(file, encoding='bytes')[b'label_names']
     return [name.decode() for name in data]
 
+def normalization(images):
+    images = images.reshape(-1, 3072)
+    each_pixel_mean = images.mean(axis=0)
+    each_pixel_std = np.std(images, axis=0)
+    images = np.divide(np.subtract(images, each_pixel_mean), each_pixel_std)
+    return images.reshape(-1, 32, 32, 3)
+
 def loadData(bTrain=True):
     if not bTrain:
         images, labels = uncompress('test_batch')
@@ -31,12 +38,3 @@ def loadData(bTrain=True):
             images[start:end, :] = batch_data
             labels[start:end] = batch_labels
     return normalization(images), labels, np.eye(10, dtype=float)[labels]
-
-def normalization(images):
-    images = images.reshape(-1, 3072)
-    each_pixel_mean = images.mean(axis=0)
-    each_pixel_std = np.std(images, axis=0)
-    images = np.divide(np.subtract(images, each_pixel_mean), each_pixel_std)
-    return images.reshape(-1, 32, 32, 3)
-
-a, b, c = loadData()
